@@ -38,6 +38,17 @@ const (
 	EventForumReplyDelete      EventType = "FORUM_REPLY_DELETE"
 	EventForumAuditResult      EventType = "FORUM_PUBLISH_AUDIT_RESULT"
 	EventInteractionCreate     EventType = "INTERACTION_CREATE"
+
+	EventUserMessageCreate  EventType = "C2C_MESSAGE_CREATE"
+	EventGroupMessageCreate EventType = "GROUP_AT_MESSAGE_CREATE"
+	EventGroupAddBot        EventType = "GROUP_ADD_ROBOT"
+	EventGroupDelBot        EventType = "GROUP_DEL_ROBOT"
+	EventGroupRejectMsg     EventType = "GROUP_MSG_REJECT"
+	EventGroupReciveMsg     EventType = "GROUP_MSG_RECEIVE"
+	EventUserAddBot         EventType = "FRIEND_ADD"
+	EventUserDelBot         EventType = "FRIEND_DEL"
+	EventUserRejectMsg      EventType = "C2C_MSG_REJECT"
+	EventUserReciveMsg      EventType = "C2C_MSG_RECEIVE"
 )
 
 // intentEventMap 不同 intent 对应的事件定义
@@ -58,6 +69,11 @@ var intentEventMap = map[Intent][]EventType{
 		EventForumPostDelete, EventForumReplyCreate, EventForumReplyDelete, EventForumAuditResult,
 	},
 	IntentInteraction: {EventInteractionCreate},
+	IntentUserAndGroup: {
+		EventUserMessageCreate, EventGroupMessageCreate,
+		EventGroupAddBot, EventGroupDelBot, EventGroupRejectMsg, EventGroupReciveMsg,
+		EventUserAddBot, EventUserDelBot, EventUserReciveMsg, EventUserRejectMsg,
+	},
 }
 
 var eventIntentMap = transposeIntentEventMap(intentEventMap)

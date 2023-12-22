@@ -43,6 +43,19 @@ const (
 	IntentDirectMessageReactions
 	IntentDirectMessageTyping
 
+	// IntentUserAndGroup 包含
+	// - C2C_MESSAGE_CREATE
+	// - GROUP_AT_MESSAGE_CREATE
+	// - GROUP_ADD_ROBOT
+	// - GROUP_DEL_ROBOT
+	// - GROUP_MSG_REJECT
+	// - GROUP_MSG_RECEIVE
+	// - FRIEND_ADD
+	// - FRIEND_DEL
+	// - C2C_MSG_REJECT
+	// - C2C_MSG_RECEIVE
+	IntentUserAndGroup Intent = 1 << 25
+
 	IntentInteraction Intent = 1 << 26 // 互动事件
 	IntentAudit       Intent = 1 << 27 // 审核事件
 	// IntentForum 论坛事件

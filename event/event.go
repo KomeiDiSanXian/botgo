@@ -51,6 +51,17 @@ var eventParseFuncMap = map[dto.OPCode]map[dto.EventType]eventParseFunc{
 		dto.EventForumAuditResult:  forumAuditHandler,
 
 		dto.EventInteractionCreate: interactionHandler,
+
+		dto.EventUserMessageCreate:  chatFromUserHandler,
+		dto.EventGroupMessageCreate: chatFromGroupHandler,
+		dto.EventGroupAddBot:        groupAddBotHandler,
+		dto.EventGroupDelBot:        groupDelBotHandler,
+		dto.EventGroupRejectMsg:     groupRejectMessageHandler,
+		dto.EventGroupReciveMsg:     groupReciveMessageHandler,
+		dto.EventUserAddBot:         userAddBotHandler,
+		dto.EventUserDelBot:         userDelBotHandler,
+		dto.EventUserReciveMsg:      userReciveMessageHandler,
+		dto.EventUserRejectMsg:      userRejectMessageHandler,
 	},
 }
 
@@ -258,6 +269,116 @@ func interactionHandler(payload *dto.WSPayload, message []byte) error {
 	}
 	if DefaultHandlers.Interaction != nil {
 		return DefaultHandlers.Interaction(payload, data)
+	}
+	return nil
+}
+
+func chatFromUserHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSUserQuery{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.UserQuery != nil {
+		return DefaultHandlers.UserQuery(payload, data)
+	}
+	return nil
+}
+
+func chatFromGroupHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSGroupAtMessage{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.GroupAtMessage != nil {
+		return DefaultHandlers.GroupAtMessage(payload, data)
+	}
+	return nil
+}
+
+func userAddBotHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSUserAddBot{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.UserAddBot != nil {
+		return DefaultHandlers.UserAddBot(payload, data)
+	}
+	return nil
+}
+
+func userDelBotHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSUserDelBot{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.UserDelBot != nil {
+		return DefaultHandlers.UserDelBot(payload, data)
+	}
+	return nil
+}
+
+func userReciveMessageHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSUserReciveMessage{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.UserReciveMessage != nil {
+		return DefaultHandlers.UserReciveMessage(payload, data)
+	}
+	return nil
+}
+
+func userRejectMessageHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSUserRejectMessage{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.UserRejectMessage != nil {
+		return DefaultHandlers.UserRejectMessage(payload, data)
+	}
+	return nil
+}
+
+func groupReciveMessageHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSGroupReciveMessage{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.GroupReciveMessage != nil {
+		return DefaultHandlers.GroupReciveMessage(payload, data)
+	}
+	return nil
+}
+
+func groupRejectMessageHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSGroupRejectMessage{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.GroupRejectMessage != nil {
+		return DefaultHandlers.GroupRejectMessage(payload, data)
+	}
+	return nil
+}
+
+func groupAddBotHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSAddGroup{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.AddGroup != nil {
+		return DefaultHandlers.AddGroup(payload, data)
+	}
+	return nil
+}
+
+func groupDelBotHandler(payload *dto.WSPayload, message []byte) error {
+	data := &dto.WSQuitGroup{}
+	if err := ParseData(message, data); err != nil {
+		return err
+	}
+	if DefaultHandlers.QuitGroup != nil {
+		return DefaultHandlers.QuitGroup(payload, data)
 	}
 	return nil
 }

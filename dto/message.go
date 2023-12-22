@@ -36,6 +36,11 @@ type Message struct {
 	MessageReference *MessageReference `json:"message_reference,omitempty"`
 	// 私信场景下，该字段用来标识从哪个频道发起的私信
 	SrcGuildID string `json:"src_guild_id"`
+
+	// 群聊的openid
+	GroupOpenID string `json:"group_openid"`
+	// 操作添加机器人进群的群成员openid
+	OpreatiorOpenID string `json:"op_member_openid"`
 }
 
 // Embed 结构
@@ -68,4 +73,11 @@ type MessageReactionUsers struct {
 	Users  []*User `json:"users,omitempty"`
 	Cookie string  `json:"cookie,omitempty"`
 	IsEnd  bool    `json:"is_end,omitempty"`
+}
+
+// MediaReturnParam 富文本回参
+type MediaReturnParam struct {
+	UUID string `json:"file_uuid"` // 文件id
+	Info string `json:"file_info"`
+	TTL  int    `json:"ttl"` // 有效期，表示剩余多少秒到期，到期后 file_info 失效，当等于 0 时，表示可长期使用
 }

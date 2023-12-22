@@ -107,3 +107,33 @@ type WSForumAuditData ForumAuditResult
 
 // WSInteractionData 互动事件
 type WSInteractionData Interaction
+
+// WSUserQuery 用户单聊事件
+type WSUserQuery Message
+
+// WSGroupAtMessage 群聊at机器人事件
+type WSGroupAtMessage Message
+
+// WSUserAddBot 用户添加机器人事件
+type WSUserAddBot Message
+
+// WSUserDelBot 用户删除机器人事件
+type WSUserDelBot Message
+
+// WSUserRejectMessage 用户拒绝主动消息事件
+type WSUserRejectMessage Message
+
+// WSUserReciveMessage 用户接受主动消息事件
+type WSUserReciveMessage Message
+
+// WSAddGroup 群聊添加机器人事件
+type WSAddGroup Message
+
+// WSQuitGroup 群聊删除机器人事件
+type WSQuitGroup Message
+
+// WSGroupRejectMessage 群聊拒绝主动消息事件
+type WSGroupRejectMessage Message
+
+// WSGroupReciveMessage 群聊接受主动消息事件
+type WSGroupReciveMessage Message

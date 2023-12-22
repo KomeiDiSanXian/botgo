@@ -31,6 +31,17 @@ var DefaultHandlers struct {
 	ForumAudit ForumAuditEventHandler
 
 	Interaction InteractionEventHandler
+
+	UserQuery          UserQueryEventHandler
+	GroupAtMessage     GroupAtMessageEventHandler
+	UserAddBot         UserAddBotEventHandler
+	UserDelBot         UserDelBotEventHandler
+	UserRejectMessage  UserRejectMessageEventHandler
+	UserReciveMessage  UserReciveMessageEventHandler
+	AddGroup           AddGroupEventHandler
+	QuitGroup          QuitGroupEventHandler
+	GroupRejectMessage GroupRejectMessageEventHandler
+	GroupReciveMessage GroupReciveMessageEventHandler
 }
 
 // ReadyHandler 可以处理 ws 的 ready 事件
@@ -94,6 +105,36 @@ type ForumAuditEventHandler func(event *dto.WSPayload, data *dto.WSForumAuditDat
 // InteractionEventHandler 互动事件 handler
 type InteractionEventHandler func(event *dto.WSPayload, data *dto.WSInteractionData) error
 
+// UserQueryEventHandler 用户单聊事件 handler
+type UserQueryEventHandler func(event *dto.WSPayload, data *dto.WSUserQuery) error
+
+// GroupAtMessageEventHandler 群聊at机器人事件 handler
+type GroupAtMessageEventHandler func(event *dto.WSPayload, data *dto.WSGroupAtMessage) error
+
+// UserAddBotEventHandler 用户添加机器人事件 handler
+type UserAddBotEventHandler func(event *dto.WSPayload, data *dto.WSUserAddBot) error
+
+// UserDelBotEventHandler 用户删除机器人事件 handler
+type UserDelBotEventHandler func(event *dto.WSPayload, data *dto.WSUserDelBot) error
+
+// UserRejectMessageEventHandler 用户拒绝主动消息事件 handler
+type UserRejectMessageEventHandler func(event *dto.WSPayload, data *dto.WSUserRejectMessage) error
+
+// UserReciveMessageEventHandler 用户接受主动消息事件 handler
+type UserReciveMessageEventHandler func(event *dto.WSPayload, data *dto.WSUserReciveMessage) error
+
+// AddGroupEventHandler 群聊添加机器人事件 handler
+type AddGroupEventHandler func(event *dto.WSPayload, data *dto.WSAddGroup) error
+
+// QuitGroupEventHandler 群聊删除机器人事件 handler
+type QuitGroupEventHandler func(event *dto.WSPayload, data *dto.WSQuitGroup) error
+
+// GroupRejectMessageEventHandler 群聊拒绝主动消息事件 handler
+type GroupRejectMessageEventHandler func(event *dto.WSPayload, data *dto.WSGroupRejectMessage) error
+
+// GroupReciveMessageEventHandler 群聊接受主动消息事件 handler
+type GroupReciveMessageEventHandler func(event *dto.WSPayload, data *dto.WSGroupReciveMessage) error
+
 // RegisterHandlers 注册事件回调，并返回 intent 用于 websocket 的鉴权
 func RegisterHandlers(handlers ...interface{}) dto.Intent {
 	var i dto.Intent
@@ -124,6 +165,7 @@ func RegisterHandlers(handlers ...interface{}) dto.Intent {
 	return i
 }
 
+// registerForumHandlers 注册论坛关系链相关handlers
 func registerForumHandlers(i dto.Intent, handlers ...interface{}) dto.Intent {
 	for _, h := range handlers {
 		switch handle := h.(type) {
@@ -194,6 +236,36 @@ func registerMessageHandlers(i dto.Intent, handlers ...interface{}) dto.Intent {
 		case MessageAuditEventHandler:
 			DefaultHandlers.MessageAudit = handle
 			i = i | dto.EventToIntent(dto.EventMessageAuditPass, dto.EventMessageAuditReject)
+		case UserQueryEventHandler:
+			DefaultHandlers.UserQuery = handle
+			i = i | dto.EventToIntent(dto.EventUserMessageCreate)
+		case GroupAtMessageEventHandler:
+			DefaultHandlers.GroupAtMessage = handle
+			i = i | dto.EventToIntent(dto.EventGroupMessageCreate)
+		case AddGroupEventHandler:
+			DefaultHandlers.AddGroup = handle
+			i = i | dto.EventToIntent(dto.EventGroupAddBot)
+		case QuitGroupEventHandler:
+			DefaultHandlers.QuitGroup = handle
+			i = i | dto.EventToIntent(dto.EventGroupDelBot)
+		case GroupRejectMessageEventHandler:
+			DefaultHandlers.GroupRejectMessage = handle
+			i = i | dto.EventToIntent(dto.EventGroupRejectMsg)
+		case GroupReciveMessageEventHandler:
+			DefaultHandlers.GroupReciveMessage = handle
+			i = i | dto.EventToIntent(dto.EventGroupReciveMsg)
+		case UserAddBotEventHandler:
+			DefaultHandlers.UserAddBot = handle
+			i = i | dto.EventToIntent(dto.EventUserAddBot)
+		case UserDelBotEventHandler:
+			DefaultHandlers.UserDelBot = handle
+			i = i | dto.EventToIntent(dto.EventUserDelBot)
+		case UserReciveMessageEventHandler:
+			DefaultHandlers.UserReciveMessage = handle
+			i = i | dto.EventToIntent(dto.EventUserReciveMsg)
+		case UserRejectMessageEventHandler:
+			DefaultHandlers.UserRejectMessage = handle
+			i = i | dto.EventToIntent(dto.EventUserRejectMsg) 
 		default:
 		}
 	}
